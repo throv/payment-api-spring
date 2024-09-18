@@ -1,0 +1,15 @@
+services:
+  payment_api:
+    container_name: payment_docker
+    image: postgres:12.19-alpine3.20
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: payment_api
+    volumes:
+      - /var/lib/postgresql/data
+      - ./resources/data.sql:/docker-entrypoint-initdb.d/data.sql
+
+
+

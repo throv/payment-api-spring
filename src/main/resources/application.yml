@@ -7,10 +7,14 @@ spring:
     password: 123456
     driver-class-name: org.postgresql.Driver
   jpa:
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
-
-#  jpa:
+  sql:
+    init:
+      mode: always
+    #  jpa:
 #    hibernate:
 #      ddl-auto: update
 #    database-platform: org.hibernate.dialect.PostgreSQLDialect

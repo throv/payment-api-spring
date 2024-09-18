@@ -1,5 +1,5 @@
 package com.pagbank.payment_api.enums
 
-enum class PaymentStatus {
+enum class PaymentStatusEnum {
     PENDING,
 }

@@ -1,4 +1,7 @@
 package com.pagbank.payment_api.repository
 
-class PaymentRepository {
+import com.pagbank.payment_api.model.PaymentModel
+import org.springframework.data.jpa.repository.JpaRepository
+
+interface PaymentRepository: JpaRepository<PaymentModel, String> {
 }
