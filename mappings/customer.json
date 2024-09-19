@@ -1,0 +1,18 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/api/v2/customer"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+
+        "customer_name": "Ana Banana",
+        "customer_cpf": "123.456.789-00",
+        "customer_address": "Rua das Flores, 123"
+      },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

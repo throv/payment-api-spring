@@ -10,6 +10,14 @@ services:
     volumes:
       - /var/lib/postgresql/data
       - ./resources/data.sql:/docker-entrypoint-initdb.d/data.sql
+  wiremock:
+    image: rodolpheche/wiremock
+    container_name: wiremock
+    volumes:
+      - ./__files:/home/wiremock/__files
+      - ./mappings:/home/wiremock/mappings
+    ports:
+      - '8082:8080'
 
 
 

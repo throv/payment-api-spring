@@ -17,6 +17,9 @@ data class PaymentModel(
     @Enumerated(EnumType.STRING)
     var paymentMethod: PaymentMethodEnum,
     var description: String,
+    val customerName: String,
+    val customerCpf: String,
+    val customerAddress: String,
     @Enumerated(EnumType.STRING)
     val status: PaymentStatusEnum,
     val createdAt: LocalDateTime = LocalDateTime.now()

@@ -1,5 +1,8 @@
 package com.pagbank.payment_api.service
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.pagbank.payment_api.dto.CustomerDto
 import com.pagbank.payment_api.dto.PaymentDto
 import com.pagbank.payment_api.enums.PaymentMethodEnum
 import com.pagbank.payment_api.enums.PaymentStatusEnum
@@ -7,6 +10,9 @@ import com.pagbank.payment_api.exceptions.InvalidPaymentMethodException
 import com.pagbank.payment_api.exceptions.NoPaymentFoundException
 import com.pagbank.payment_api.model.PaymentModel
 import com.pagbank.payment_api.repository.PaymentRepository
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import org.springframework.http.converter.HttpMessageNotReadableException
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
@@ -18,15 +24,42 @@ class PaymentService(
     private val paymentRepository: PaymentRepository
 ) {
 
+    private val client = OkHttpClient()
+
+    fun getCustomerInfo(): String {
+        val request = Request.Builder()
+            .url("http://localhost:8082/api/v2/customer")
+            .build()
+
+        return try {
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) {
+                    throw RuntimeException("Failed to fetch customer info: ${response.code}")
+                }
+                response.body?.string() ?: throw RuntimeException("Empty response body")
+            }
+        } catch (e: Exception) {
+            throw RuntimeException("Error while fetching customer info: ${e.message}")
+        }
+    }
+
     fun createNewPayment(newPayment: PaymentDto): PaymentModel {
 
         try {
+
+            val customerJson = getCustomerInfo()
+            val objectMapper = ObjectMapper()
+            val customerDto = objectMapper.readValue(customerJson, CustomerDto::class.java)
+
             val payment = PaymentModel(
                 id = "PAY-" + UUID.randomUUID().toString(),
                 amount = newPayment.amount,
                 currency = newPayment.currency,
                 paymentMethod = newPayment.paymentMethod,
                 description = newPayment.description,
+                customerName = customerDto.customerName,
+                customerCpf = customerDto.customerCpf,
+                customerAddress = customerDto.customerAddress,
                 status = PaymentStatusEnum.PENDING,
                 createdAt = LocalDateTime.now()
             )
