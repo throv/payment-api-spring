@@ -19,3 +19,8 @@ spring:
 #      ddl-auto: update
 #    database-platform: org.hibernate.dialect.PostgreSQLDialect
     # Spring Boot-specific; less flexible
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
